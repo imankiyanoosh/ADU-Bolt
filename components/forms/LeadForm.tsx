@@ -24,6 +24,11 @@ const LeadForm = ({ isOpen, onClose }: LeadFormProps) => {
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = 'unset';
+      // Reset form when closed
+      setCurrentStep(1);
+      setLeadData({});
+      setIsSubmitted(false);
+      setIsSubmitting(false);
     }
     return () => {
       document.body.style.overflow = 'unset';
@@ -92,6 +97,30 @@ const LeadForm = ({ isOpen, onClose }: LeadFormProps) => {
   };
 
   const nextStep = () => {
+    // Basic validation before proceeding
+    if (currentStep === 1 && !leadData.projectType) {
+      alert('Please select a project type');
+      return;
+    }
+    if (currentStep === 2 && !leadData.projectScope) {
+      alert('Please select a project scope');
+      return;
+    }
+    if (currentStep === 3 && !leadData.timeline) {
+      alert('Please select a timeline');
+      return;
+    }
+    if (currentStep === 4 && !leadData.budget) {
+      alert('Please select a budget range');
+      return;
+    }
+    if (currentStep === 7) {
+      if (!leadData['full-name'] || !leadData['email'] || !leadData['phone']) {
+        alert('Please fill in all required contact information');
+        return;
+      }
+    }
+    
     if (currentStep < totalSteps) {
       setCurrentStep(currentStep + 1);
     }
@@ -104,18 +133,30 @@ const LeadForm = ({ isOpen, onClose }: LeadFormProps) => {
   };
 
   const handleSubmit = async () => {
+    // Validate required fields
+    if (!leadData['full-name'] || !leadData['email'] || !leadData['phone']) {
+      alert('Please fill in all required contact information');
+      return;
+    }
+    
     setIsSubmitting(true);
     
-    // Calculate lead score
-    const score = calculateLeadScore(leadData);
-    const formDataWithScore = { ...leadData, leadScore: score };
-    
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    
-    console.log('Lead submitted:', formDataWithScore);
-    setIsSubmitting(false);
-    setIsSubmitted(true);
+    try {
+      // Calculate lead score
+      const score = calculateLeadScore(leadData);
+      const formDataWithScore = { ...leadData, leadScore: score };
+      
+      // Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      
+      console.log('Lead submitted:', formDataWithScore);
+      setIsSubmitting(false);
+      setIsSubmitted(true);
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      setIsSubmitting(false);
+      alert('There was an error submitting your form. Please try again.');
+    }
   };
 
   const getScopeOptions = (projectType: string) => {

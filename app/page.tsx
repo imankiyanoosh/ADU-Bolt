@@ -14,13 +14,15 @@ import LeadForm from '@/components/forms/LeadForm';
 export default function Home() {
   const [isLeadFormOpen, setIsLeadFormOpen] = useState(false);
 
+  const openLeadForm = () => setIsLeadFormOpen(true);
+
   return (
     <div className="min-h-screen">
-      <Header />
+      <Header onOpenLeadForm={openLeadForm} />
       <main>
-        <Hero />
+        <Hero onOpenLeadForm={openLeadForm} />
         <About />
-        <Services />
+        <Services onOpenLeadForm={openLeadForm} />
         <Portfolio />
         <Testimonials />
         <FAQ />
@@ -36,7 +38,7 @@ export default function Home() {
       {/* Global Lead Form Trigger */}
       <div id="lead-form" className="invisible">
         <button 
-          onClick={() => setIsLeadFormOpen(true)}
+          onClick={openLeadForm}
           className="invisible"
           aria-hidden="true"
         />

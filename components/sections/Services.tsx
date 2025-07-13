@@ -4,7 +4,11 @@ import { motion } from 'framer-motion';
 import { Building, ChefHat, Bath, Home, Ruler, ArrowRight, Clock, DollarSign } from 'lucide-react';
 import { fadeInUp, staggerContainer, cardHover } from '@/lib/animations';
 
-const Services = () => {
+interface ServicesProps {
+  onOpenLeadForm: () => void;
+}
+
+const Services = ({ onOpenLeadForm }: ServicesProps) => {
   const primaryService = {
     id: 'full-adu',
     title: 'Full ADU Construction',
@@ -151,7 +155,7 @@ const Services = () => {
                   className="group bg-gradient-gold hover:bg-gradient-gold-hover text-[var(--primary-charcoal)] px-8 py-4 rounded-full font-bold text-lg transition-all duration-300 shadow-luxury"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.98 }}
-                  onClick={() => document.getElementById('lead-form')?.scrollIntoView({ behavior: 'smooth' })}
+                  onClick={onOpenLeadForm}
                 >
                   <span className="flex items-center space-x-2">
                     <span>Start Your ADU Project</span>
@@ -198,7 +202,7 @@ const Services = () => {
                 variants={fadeInUp}
                 whileHover={cardHover}
                 className="glass-morphism bg-white/10 backdrop-blur-lg rounded-2xl p-8 shadow-lg border border-white/10 hover:border-[var(--primary-gold)]/30 transition-all duration-300 cursor-pointer"
-                onClick={() => document.getElementById('lead-form')?.scrollIntoView({ behavior: 'smooth' })}
+                onClick={onOpenLeadForm}
               >
                 <div className="flex items-center mb-6">
                   <div className="bg-gradient-to-br from-[var(--primary-gold)]/20 to-[var(--accent-gold)]/20 p-4 rounded-xl mr-4">
@@ -262,7 +266,7 @@ const Services = () => {
             className="bg-transparent border-2 border-[var(--primary-gold)] text-[var(--primary-gold)] hover:bg-[var(--primary-gold)] hover:text-[var(--primary-charcoal)] px-8 py-4 rounded-full font-semibold text-lg transition-all duration-300"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.98 }}
-            onClick={() => document.getElementById('lead-form')?.scrollIntoView({ behavior: 'smooth' })}
+            onClick={onOpenLeadForm}
           >
             Get Your Custom Quote
           </motion.button>

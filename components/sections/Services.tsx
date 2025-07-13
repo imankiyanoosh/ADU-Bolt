@@ -1,3 +1,4 @@
+
 'use client';
 
 import { motion } from 'framer-motion';
@@ -213,9 +214,8 @@ const Services = ({ onOpenLeadForm }: ServicesProps) => {
                   glowColor={index % 2 === 0 ? 'blue' : 'purple'} 
                   customSize 
                   className="glass-morphism bg-white/10 backdrop-blur-lg rounded-2xl p-8 shadow-lg border border-white/10 hover:border-[var(--primary-gold)]/30 transition-all duration-300 w-full h-full"
-                ></GlowCard>
-              </motion.div>
-                <div className="flex items-center mb-6">
+                >
+                  <div className="flex items-center mb-6">
                     <div className="bg-gradient-to-br from-[var(--primary-gold)]/20 to-[var(--accent-gold)]/20 p-4 rounded-xl mr-4">
                       <service.icon className="text-[var(--primary-gold)]" size={28} />
                     </div>

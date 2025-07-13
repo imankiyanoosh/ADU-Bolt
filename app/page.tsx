@@ -24,7 +24,7 @@ export default function Home() {
         <About />
         <Services onOpenLeadForm={openLeadForm} />
         <Portfolio />
-        <Testimonials />
+        <Testimonials onOpenLeadForm={openLeadForm} />
         <FAQ />
       </main>
       <Footer />

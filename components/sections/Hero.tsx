@@ -4,7 +4,11 @@ import { useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight, Star, TrendingUp } from 'lucide-react';
 
-const Hero = () => {
+interface HeroProps {
+  onOpenLeadForm: () => void;
+}
+
+const Hero = ({ onOpenLeadForm }: HeroProps) => {
   const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
@@ -88,7 +92,7 @@ const Hero = () => {
                 className="group bg-gradient-gold hover:bg-gradient-gold-hover text-[var(--primary-charcoal)] px-8 py-4 rounded-full font-bold text-lg transition-all duration-300 shadow-luxury animate-pulse-gold"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.98 }}
-                onClick={() => document.getElementById('lead-form')?.scrollIntoView({ behavior: 'smooth' })}
+                onClick={onOpenLeadForm}
               >
                 <span className="flex items-center justify-center space-x-2">
                   <span>Get Your Free ADU Assessment</span>

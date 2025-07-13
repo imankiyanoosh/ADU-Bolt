@@ -5,7 +5,11 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Star, Quote, ArrowLeft, ArrowRight, Play } from 'lucide-react';
 import { fadeInUp, staggerContainer } from '@/lib/animations';
 
-const Testimonials = () => {
+interface TestimonialsProps {
+  onOpenLeadForm: () => void;
+}
+
+const Testimonials = ({ onOpenLeadForm }: TestimonialsProps) => {
   const [currentTestimonial, setCurrentTestimonial] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
 
@@ -180,11 +184,11 @@ const Testimonials = () => {
                       </motion.button>
                     )}
                   </div>
-                  
+
                   <h3 className="text-xl font-bold text-white mb-2">{currentTest.name}</h3>
                   <p className="text-[var(--primary-gold)] mb-2">{currentTest.location}</p>
                   <p className="text-gray-300 text-sm mb-4">{currentTest.project}</p>
-                  
+
                   {/* Star Rating */}
                   <div className="flex justify-center lg:justify-start space-x-1 mb-4">
                     {[...Array(currentTest.rating)].map((_, i) => (
@@ -302,13 +306,13 @@ const Testimonials = () => {
                   <p className="text-gray-300 text-sm">{testimonial.project}</p>
                 </div>
               </div>
-              
+
               <div className="flex space-x-1 mb-3">
                 {[...Array(testimonial.rating)].map((_, i) => (
                   <Star key={i} className="text-[var(--primary-gold)] fill-current" size={16} />
                 ))}
               </div>
-              
+
               <p className="text-gray-300 text-sm line-clamp-3">
                 "{testimonial.quote}"
               </p>
@@ -347,14 +351,13 @@ const Testimonials = () => {
           className="text-center mt-16"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
           <motion.button
             className="bg-gradient-gold hover:bg-gradient-gold-hover text-[var(--primary-charcoal)] px-8 py-4 rounded-full font-bold text-lg transition-all duration-300 shadow-luxury"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.98 }}
-            onClick={() => document.getElementById('lead-form')?.scrollIntoView({ behavior: 'smooth' })}
+            onClick={onOpenLeadForm}
           >
             Join Our Satisfied Clients
           </motion.button>

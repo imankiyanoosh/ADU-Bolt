@@ -1,7 +1,8 @@
+
 'use client';
 
 import { useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowLeft, ArrowRight, ExternalLink, MapPin, Calendar, DollarSign } from 'lucide-react';
 import { fadeInUp, staggerContainer } from '@/lib/animations';
 
@@ -195,114 +196,118 @@ const Portfolio = () => {
         </motion.div>
 
         {/* Projects Grid */}
-        <motion.div
-          className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
-          variants={staggerContainer}
-          initial="initial"
-          whileInView="animate"
-          viewport={{ once: true, amount: 0.2 }}
-        >
-          {filteredProjects.map((project, index) => (
-            <motion.div
-              key={project.id}
-              className="glass-morphism bg-white backdrop-blur-lg rounded-2xl overflow-hidden shadow-lg hover:shadow-luxury transition-all duration-300"
-              variants={fadeInUp}
-              whileHover={{ y: -10, scale: 1.02 }}
-              layout
-            >
-              {/* Project Image Carousel */}
-              <div className="relative h-64 overflow-hidden group">
-                <img
-                  src={project.images[getCurrentImageIndex(project.id)]}
-                  alt={project.title}
-                  className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
-                />
-                
-                {project.images.length > 1 && (
-                  <>
-                    <button
-                      onClick={() => prevImage(project.id, project.images)}
-                      className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-black/50 text-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={activeFilter}
+            className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
+            variants={staggerContainer}
+            initial="initial"
+            animate="animate"
+            exit="initial"
+            viewport={{ once: true, amount: 0.2 }}
+          >
+            {filteredProjects.map((project, index) => (
+              <motion.div
+                key={`${activeFilter}-${project.id}`}
+                className="glass-morphism bg-white backdrop-blur-lg rounded-2xl overflow-hidden shadow-lg hover:shadow-luxury transition-all duration-300"
+                variants={fadeInUp}
+                whileHover={{ y: -10, scale: 1.02 }}
+                layout
+              >
+                {/* Project Image Carousel */}
+                <div className="relative h-64 overflow-hidden group">
+                  <img
+                    src={project.images[getCurrentImageIndex(project.id)]}
+                    alt={project.title}
+                    className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+                  />
+                  
+                  {project.images.length > 1 && (
+                    <>
+                      <button
+                        onClick={() => prevImage(project.id, project.images)}
+                        className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-black/50 text-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
+                      >
+                        <ArrowLeft size={16} />
+                      </button>
+                      <button
+                        onClick={() => nextImage(project.id, project.images)}
+                        className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-black/50 text-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
+                      >
+                        <ArrowRight size={16} />
+                      </button>
+                    </>
+                  )}
+
+                  {/* Category Badge */}
+                  <div className="absolute top-4 left-4">
+                    <span className="bg-[var(--primary-gold)] text-[var(--primary-charcoal)] px-3 py-1 rounded-full text-sm font-semibold">
+                      {filters.find(f => f.id === project.category)?.label || project.category}
+                    </span>
+                  </div>
+
+                  {/* External Link */}
+                  <div className="absolute top-4 right-4">
+                    <motion.button
+                      className="bg-white/90 text-[var(--primary-charcoal)] p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
+                      whileHover={{ scale: 1.1 }}
+                      whileTap={{ scale: 0.9 }}
                     >
-                      <ArrowLeft size={16} />
-                    </button>
-                    <button
-                      onClick={() => nextImage(project.id, project.images)}
-                      className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-black/50 text-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
-                    >
-                      <ArrowRight size={16} />
-                    </button>
-                  </>
-                )}
-
-                {/* Category Badge */}
-                <div className="absolute top-4 left-4">
-                  <span className="bg-[var(--primary-gold)] text-[var(--primary-charcoal)] px-3 py-1 rounded-full text-sm font-semibold">
-                    {filters.find(f => f.id === project.category)?.label}
-                  </span>
-                </div>
-
-                {/* External Link */}
-                <div className="absolute top-4 right-4">
-                  <motion.button
-                    className="bg-white/90 text-[var(--primary-charcoal)] p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
-                    whileHover={{ scale: 1.1 }}
-                    whileTap={{ scale: 0.9 }}
-                  >
-                    <ExternalLink size={16} />
-                  </motion.button>
-                </div>
-              </div>
-
-              {/* Project Details */}
-              <div className="p-6">
-                <h3 className="text-xl font-bold text-[var(--primary-charcoal)] mb-2">
-                  {project.title}
-                </h3>
-                
-                <p className="text-gray-600 mb-4 line-clamp-2">
-                  {project.description}
-                </p>
-
-                {/* Project Meta */}
-                <div className="space-y-2 mb-4">
-                  <div className="flex items-center text-sm text-gray-500">
-                    <MapPin size={16} className="mr-2" />
-                    <span>{project.location}</span>
-                  </div>
-                  <div className="flex items-center text-sm text-gray-500">
-                    <Calendar size={16} className="mr-2" />
-                    <span>Completed {project.completedDate}</span>
-                  </div>
-                  <div className="flex items-center text-sm text-gray-500">
-                    <DollarSign size={16} className="mr-2" />
-                    <span>{project.size} • {project.investment}</span>
+                      <ExternalLink size={16} />
+                    </motion.button>
                   </div>
                 </div>
 
-                {/* Value Addition */}
-                <div className="bg-gradient-to-r from-[var(--primary-gold)]/10 to-[var(--accent-gold)]/10 border border-[var(--primary-gold)]/20 rounded-lg p-3 mb-4">
-                  <div className="text-center">
-                    <div className="text-lg font-bold text-[var(--primary-charcoal)]">
-                      {project.valueAdd}
+                {/* Project Details */}
+                <div className="p-6">
+                  <h3 className="text-xl font-bold text-[var(--primary-charcoal)] mb-2">
+                    {project.title}
+                  </h3>
+                  
+                  <p className="text-gray-600 mb-4 line-clamp-2">
+                    {project.description}
+                  </p>
+
+                  {/* Project Meta */}
+                  <div className="space-y-2 mb-4">
+                    <div className="flex items-center text-sm text-gray-500">
+                      <MapPin size={16} className="mr-2" />
+                      <span>{project.location}</span>
                     </div>
-                    <div className="text-sm text-gray-600">Property Value Added</div>
+                    <div className="flex items-center text-sm text-gray-500">
+                      <Calendar size={16} className="mr-2" />
+                      <span>Completed {project.completedDate}</span>
+                    </div>
+                    <div className="flex items-center text-sm text-gray-500">
+                      <DollarSign size={16} className="mr-2" />
+                      <span>{project.size} • {project.investment}</span>
+                    </div>
+                  </div>
+
+                  {/* Value Addition */}
+                  <div className="bg-gradient-to-r from-[var(--primary-gold)]/10 to-[var(--accent-gold)]/10 border border-[var(--primary-gold)]/20 rounded-lg p-3 mb-4">
+                    <div className="text-center">
+                      <div className="text-lg font-bold text-[var(--primary-charcoal)]">
+                        {project.valueAdd}
+                      </div>
+                      <div className="text-sm text-gray-600">Property Value Added</div>
+                    </div>
+                  </div>
+
+                  {/* Features */}
+                  <div className="space-y-2">
+                    {project.features.slice(0, 3).map((feature, i) => (
+                      <div key={i} className="flex items-center text-sm text-gray-600">
+                        <div className="w-1.5 h-1.5 bg-[var(--primary-gold)] rounded-full mr-2"></div>
+                        <span>{feature}</span>
+                      </div>
+                    ))}
                   </div>
                 </div>
-
-                {/* Features */}
-                <div className="space-y-2">
-                  {project.features.slice(0, 3).map((feature, i) => (
-                    <div key={i} className="flex items-center text-sm text-gray-600">
-                      <div className="w-1.5 h-1.5 bg-[var(--primary-gold)] rounded-full mr-2"></div>
-                      <span>{feature}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </motion.div>
-          ))}
-        </motion.div>
+              </motion.div>
+            ))}
+          </motion.div>
+        </AnimatePresence>
 
         {/* CTA Section */}
         <motion.div

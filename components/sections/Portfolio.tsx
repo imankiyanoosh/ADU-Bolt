@@ -7,7 +7,7 @@ import { fadeInUp, staggerContainer } from '@/lib/animations';
 
 const Portfolio = () => {
   const [activeFilter, setActiveFilter] = useState('all');
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [imageIndices, setImageIndices] = useState<{[key: number]: number}>({});
 
   const filters = [
     { id: 'all', label: 'All Projects' },
@@ -126,12 +126,22 @@ const Portfolio = () => {
     ? projects 
     : projects.filter(project => project.category === activeFilter);
 
-  const nextImage = (projectImages: string[]) => {
-    setCurrentImageIndex((prev) => (prev + 1) % projectImages.length);
+  const nextImage = (projectId: number, projectImages: string[]) => {
+    setImageIndices(prev => ({
+      ...prev,
+      [projectId]: ((prev[projectId] || 0) + 1) % projectImages.length
+    }));
   };
 
-  const prevImage = (projectImages: string[]) => {
-    setCurrentImageIndex((prev) => (prev - 1 + projectImages.length) % projectImages.length);
+  const prevImage = (projectId: number, projectImages: string[]) => {
+    setImageIndices(prev => ({
+      ...prev,
+      [projectId]: ((prev[projectId] || 0) - 1 + projectImages.length) % projectImages.length
+    }));
+  };
+
+  const getCurrentImageIndex = (projectId: number) => {
+    return imageIndices[projectId] || 0;
   };
 
   return (
@@ -203,7 +213,7 @@ const Portfolio = () => {
               {/* Project Image Carousel */}
               <div className="relative h-64 overflow-hidden group">
                 <img
-                  src={project.images[currentImageIndex % project.images.length]}
+                  src={project.images[getCurrentImageIndex(project.id)]}
                   alt={project.title}
                   className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
                 />
@@ -211,13 +221,13 @@ const Portfolio = () => {
                 {project.images.length > 1 && (
                   <>
                     <button
-                      onClick={() => prevImage(project.images)}
+                      onClick={() => prevImage(project.id, project.images)}
                       className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-black/50 text-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
                     >
                       <ArrowLeft size={16} />
                     </button>
                     <button
-                      onClick={() => nextImage(project.images)}
+                      onClick={() => nextImage(project.id, project.images)}
                       className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-black/50 text-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
                     >
                       <ArrowRight size={16} />

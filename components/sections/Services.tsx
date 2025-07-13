@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion';
 import { Building, ChefHat, Bath, Home, Ruler, ArrowRight, Clock, DollarSign } from 'lucide-react';
 import { fadeInUp, staggerContainer, cardHover } from '@/lib/animations';
+import { GlowCard } from '@/components/ui/spotlight-card';
 
 interface ServicesProps {
   onOpenLeadForm: () => void;
@@ -106,7 +107,11 @@ const Services = ({ onOpenLeadForm }: ServicesProps) => {
           viewport={{ once: true, amount: 0.3 }}
           transition={{ duration: 0.8 }}
         >
-          <div className="glass-morphism bg-white/10 backdrop-blur-lg rounded-3xl p-8 lg:p-12 shadow-luxury border border-[var(--primary-gold)]/20">
+          <GlowCard 
+            glowColor="orange" 
+            customSize 
+            className="glass-morphism bg-white/10 backdrop-blur-lg rounded-3xl p-8 lg:p-12 shadow-luxury border border-[var(--primary-gold)]/20 w-full h-auto aspect-auto"
+          >
             <div className="grid lg:grid-cols-2 gap-12 items-center">
               <div>
                 <div className="flex items-center mb-6">
@@ -185,7 +190,7 @@ const Services = ({ onOpenLeadForm }: ServicesProps) => {
                 </div>
               </div>
             </div>
-          </div>
+          </GlowCard>
         </motion.div>
 
         {/* Secondary Services Grid */}
@@ -201,51 +206,58 @@ const Services = ({ onOpenLeadForm }: ServicesProps) => {
                 key={service.id}
                 variants={fadeInUp}
                 whileHover={cardHover}
-                className="glass-morphism bg-white/10 backdrop-blur-lg rounded-2xl p-8 shadow-lg border border-white/10 hover:border-[var(--primary-gold)]/30 transition-all duration-300 cursor-pointer"
                 onClick={onOpenLeadForm}
+                className="cursor-pointer"
               >
+                <GlowCard 
+                  glowColor={index % 2 === 0 ? 'blue' : 'purple'} 
+                  customSize 
+                  className="glass-morphism bg-white/10 backdrop-blur-lg rounded-2xl p-8 shadow-lg border border-white/10 hover:border-[var(--primary-gold)]/30 transition-all duration-300 w-full h-full"
+                ></GlowCard>
+              </motion.div>
                 <div className="flex items-center mb-6">
-                  <div className="bg-gradient-to-br from-[var(--primary-gold)]/20 to-[var(--accent-gold)]/20 p-4 rounded-xl mr-4">
-                    <service.icon className="text-[var(--primary-gold)]" size={28} />
-                  </div>
-                  <div>
-                    <h3 className="text-xl font-bold text-white">{service.title}</h3>
-                  </div>
-                </div>
-
-                <p className="text-gray-300 mb-6 leading-relaxed">
-                  {service.description}
-                </p>
-
-                {/* Service Details */}
-                <div className="space-y-3 mb-6">
-                  <div className="flex items-center justify-between">
-                    <span className="text-gray-400">Timeline:</span>
-                    <span className="text-[var(--primary-gold)] font-semibold">{service.timeline}</span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-gray-400">Investment:</span>
-                    <span className="text-[var(--primary-gold)] font-semibold">{service.priceRange}</span>
-                  </div>
-                </div>
-
-                {/* Highlights */}
-                <div className="space-y-2 mb-6">
-                  {service.highlights.map((highlight, i) => (
-                    <div key={i} className="flex items-center space-x-2">
-                      <div className="w-1.5 h-1.5 bg-[var(--primary-gold)] rounded-full"></div>
-                      <span className="text-gray-300 text-sm">{highlight}</span>
+                    <div className="bg-gradient-to-br from-[var(--primary-gold)]/20 to-[var(--accent-gold)]/20 p-4 rounded-xl mr-4">
+                      <service.icon className="text-[var(--primary-gold)]" size={28} />
                     </div>
-                  ))}
-                </div>
+                    <div>
+                      <h3 className="text-xl font-bold text-white">{service.title}</h3>
+                    </div>
+                  </div>
 
-                <motion.div
-                  className="flex items-center text-[var(--primary-gold)] hover:text-[var(--accent-gold)] transition-colors group"
-                  whileHover={{ x: 5 }}
-                >
-                  <span className="font-semibold">Learn More</span>
-                  <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={16} />
-                </motion.div>
+                  <p className="text-gray-300 mb-6 leading-relaxed">
+                    {service.description}
+                  </p>
+
+                  {/* Service Details */}
+                  <div className="space-y-3 mb-6">
+                    <div className="flex items-center justify-between">
+                      <span className="text-gray-400">Timeline:</span>
+                      <span className="text-[var(--primary-gold)] font-semibold">{service.timeline}</span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-gray-400">Investment:</span>
+                      <span className="text-[var(--primary-gold)] font-semibold">{service.priceRange}</span>
+                    </div>
+                  </div>
+
+                  {/* Highlights */}
+                  <div className="space-y-2 mb-6">
+                    {service.highlights.map((highlight, i) => (
+                      <div key={i} className="flex items-center space-x-2">
+                        <div className="w-1.5 h-1.5 bg-[var(--primary-gold)] rounded-full"></div>
+                        <span className="text-gray-300 text-sm">{highlight}</span>
+                      </div>
+                    ))}
+                  </div>
+
+                  <motion.div
+                    className="flex items-center text-[var(--primary-gold)] hover:text-[var(--accent-gold)] transition-colors group"
+                    whileHover={{ x: 5 }}
+                  >
+                    <span className="font-semibold">Learn More</span>
+                    <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={16} />
+                  </motion.div>
+                </GlowCard>
               </motion.div>
             ))}
           </div>
